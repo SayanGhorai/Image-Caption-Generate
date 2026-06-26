@@ -10,3 +10,4 @@ streamlit
 gTTS
 einops
 timm
+gdown

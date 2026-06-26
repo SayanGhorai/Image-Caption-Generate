@@ -1,22 +1,45 @@
 import torch
 from transformers import AutoProcessor, AutoModelForCausalLM
 from PIL import Image
+import os
+import gdown
 
 
 MODEL_PATH = "models/final_model_epoch_3"
+DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/12P6eYsHFP6UMdMjSkmT0TE9skC7xV0Re"
+
+
+def download_model():
+    """
+    Download model folder from Google Drive if not already present.
+    """
+    if not os.path.exists(MODEL_PATH):
+        os.makedirs("models", exist_ok=True)
+
+        print("Downloading model from Google Drive...")
+        gdown.download_folder(
+            DRIVE_FOLDER_URL,
+            output="models",
+            quiet=False,
+            use_cookies=False
+        )
+        print("Model downloaded successfully.")
 
 
 class CaptionGenerator:
     def __init__(self):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        # Load local processor
+        # Download model if missing
+        download_model()
+
+        # Load processor
         self.processor = AutoProcessor.from_pretrained(
             MODEL_PATH,
             trust_remote_code=True
         )
 
-        # Load local merged fine-tuned model
+        # Load merged fine-tuned model
         self.model = AutoModelForCausalLM.from_pretrained(
             MODEL_PATH,
             trust_remote_code=True,
