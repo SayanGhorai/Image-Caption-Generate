@@ -10,14 +10,6 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("👁️ Drishti")
-st.subheader("Multilingual Visual Assistant for Bengali Accessibility")
-
-st.write(
-    "Upload an image to generate an English caption, "
-    "translate it into Bengali, and listen to Bengali speech output."
-)
-
 
 # Load pipeline
 @st.cache_resource
@@ -28,31 +20,82 @@ def load_pipeline():
 pipeline = load_pipeline()
 
 
-# Upload image
+# Sidebar
+with st.sidebar:
+    st.title("👁️ About Drishti")
+
+    st.markdown("""
+    **Drishti** is an AI-powered multilingual visual assistant designed for Bengali accessibility.
+
+    ### Features
+    ✅ Image Caption Generation  
+    ✅ English → Bengali Translation  
+    ✅ Bengali Speech Output  
+    ✅ Accessibility Support  
+
+    ### Model Stack
+    - Florence-2 Base (Fine-tuned with LoRA)
+    - Helsinki-NLP (EN → BN)
+    - gTTS (Bengali Voice)
+    """)
+
+    st.markdown("---")
+    st.info("Built for visually impaired assistance.")
+
+
+# Main Header
+st.title("👁️ Drishti")
+st.subheader("Multilingual Visual Assistant for Bengali Accessibility")
+
+st.markdown("""
+Upload an image and Drishti will:
+
+1. Generate an English caption  
+2. Translate it into Bengali  
+3. Convert Bengali text into speech  
+""")
+
+
+# Upload section
 uploaded_file = st.file_uploader(
-    "Upload an image",
+    "📤 Upload an Image",
     type=["jpg", "jpeg", "png"]
 )
 
 
 if uploaded_file:
+    os.makedirs("outputs/temp", exist_ok=True)
+
     temp_path = os.path.join("outputs/temp", uploaded_file.name)
 
     with open(temp_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
 
-    st.image(temp_path, caption="Uploaded Image", use_container_width=True)
+    col1, col2 = st.columns([1, 1])
 
-    with st.spinner("Generating..."):
+    with col1:
+        st.image(
+            temp_path,
+            caption="Uploaded Image",
+            use_container_width=True
+        )
+
+    with st.spinner("🔍 Processing image..."):
         result = pipeline.run(temp_path)
 
-    st.success("Done!")
+    with col2:
+        st.success("✅ Processing Complete")
 
-    st.markdown("### English Caption")
-    st.write(result["english_caption"])
+        st.markdown("### 📝 English Caption")
+        st.write(result["english_caption"])
 
-    st.markdown("### বাংলা বিবরণ")
-    st.write(result["bengali_caption"])
+        st.markdown("### 🇧🇩 Bengali Caption")
+        st.write(result["bengali_caption"])
 
-    st.markdown("### Bengali Audio")
-    st.audio(result["audio_path"])
+        st.markdown("### 🔊 Bengali Audio")
+        st.audio(result["audio_path"])
+
+
+# Footer
+st.markdown("---")
+st.caption("Built with Florence-2, NLP Translation, and Text-to-Speech for Accessibility.")

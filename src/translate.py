@@ -17,17 +17,20 @@ class BengaliTranslator:
             TRANSLATE_MODEL
         ).to(self.device)
 
+        self.model.eval()
+
     def translate_to_bengali(self, text):
         inputs = self.tokenizer(
             text,
             return_tensors="pt"
         ).to(self.device)
 
-        generated_tokens = self.model.generate(
-            **inputs,
-            forced_bos_token_id=self.tokenizer.convert_tokens_to_ids("ben_Beng"),
-            max_length=100
-        )
+        with torch.no_grad():
+            generated_tokens = self.model.generate(
+                **inputs,
+                forced_bos_token_id=self.tokenizer.convert_tokens_to_ids("ben_Beng"),
+                max_length=100
+            )
 
         bengali_text = self.tokenizer.batch_decode(
             generated_tokens,

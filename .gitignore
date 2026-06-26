@@ -1,11 +1,40 @@
+# Virtual environment
 venv/
+
+# Python cache
 __pycache__/
-outputs/temp/*
-outputs/audio/*
 *.pyc
 *.pyo
 *.pyd
+
+# Jupyter
 .ipynb_checkpoints/
+notebooks/
+
+# Environment variables
 .env
+
+# OS files
 .DS_Store
 Thumbs.db
+
+# Temporary outputs
+outputs/temp/*
+outputs/audio/*
+
+# Keep folders but ignore generated files
+!outputs/temp/.gitkeep
+!outputs/audio/.gitkeep
+
+# Large model files (important)
+models/final_model_epoch_3/
+models/florence_lora_epoch_3/
+
+# Optional: ignore all model weights
+*.safetensors
+
+# Streamlit cache
+.streamlit/
+
+# VS Code settings (optional)
+.vscode/
