@@ -11,3 +11,4 @@ gTTS
 einops
 timm
 gdown
+deep-translator
