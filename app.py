@@ -5,8 +5,8 @@ from src.pipeline import DrishtiPipeline
 
 # Page config
 st.set_page_config(
-    page_title="Drishti - Multilingual Visual Assistant",
-    page_icon="👁️",
+    page_title="Multilingual Visual Assistant",
+    page_icon="🖼️",
     layout="wide"
 )
 
@@ -22,33 +22,36 @@ pipeline = load_pipeline()
 
 # Sidebar
 with st.sidebar:
-    st.title("👁️ About Drishti")
+    st.title("About the Project")
 
     st.markdown("""
-    **Drishti** is an AI-powered multilingual visual assistant designed for Bengali accessibility.
+    This project is an AI-powered multilingual visual assistant designed to generate image captions, translate them into Bengali, and provide speech output for accessibility support.
+
+    ### Dataset Used
+    **COCO 2017 Dataset (Subset)**
+
+    - Original Dataset: 118,287 images and 591,753 captions  
+    - Validation Set: 5,000 images and 25,014 captions  
+    - Fine-tuned on a subset of **50,000 training samples**  
+    - Evaluated on **2,000 validation samples**  
+    - Used for image caption generation with Florence-2 + LoRA  
 
     ### Features
     ✅ Image Caption Generation  
-    ✅ English → Bengali Translation  
-    ✅ Bengali Speech Output  
-    ✅ Accessibility Support  
-
-    ### Model Stack
-    - Florence-2 Base (Fine-tuned with LoRA)
-    - Helsinki-NLP (EN → BN)
-    - gTTS (Bengali Voice)
+    ✅ English to Bengali Translation  
+    ✅ Bengali Audio Output   
     """)
 
     st.markdown("---")
-    st.info("Built for visually impaired assistance.")
+    st.info("Designed for assistive AI applications.")
 
 
 # Main Header
-st.title("👁️ Drishti")
-st.subheader("Multilingual Visual Assistant for Bengali Accessibility")
+st.title("Multilingual Visual Assistant")
+st.subheader("Generate image descriptions with Bengali translation and speech output")
 
 st.markdown("""
-Upload an image and Drishti will:
+Upload an image and the system will:
 
 1. Generate an English caption  
 2. Translate it into Bengali  
@@ -58,7 +61,7 @@ Upload an image and Drishti will:
 
 # Upload section
 uploaded_file = st.file_uploader(
-    "📤 Upload an Image",
+    "Upload an Image",
     type=["jpg", "jpeg", "png"]
 )
 
@@ -80,22 +83,22 @@ if uploaded_file:
             use_container_width=True
         )
 
-    with st.spinner("🔍 Processing image..."):
+    with st.spinner("Processing image..."):
         result = pipeline.run(temp_path)
 
     with col2:
-        st.success("✅ Processing Complete")
+        st.success("Processing Complete")
 
-        st.markdown("### 📝 English Caption")
+        st.markdown("### English Caption")
         st.write(result["english_caption"])
 
-        st.markdown("### 🇧🇩 Bengali Caption")
+        st.markdown("### Bengali Caption")
         st.write(result["bengali_caption"])
 
-        st.markdown("### 🔊 Bengali Audio")
+        st.markdown("### Bengali Audio")
         st.audio(result["audio_path"])
 
 
 # Footer
 st.markdown("---")
-st.caption("Built with Florence-2, NLP Translation, and Text-to-Speech for Accessibility.")
+st.caption("AI-Powered Multilingual Image Understanding System")
