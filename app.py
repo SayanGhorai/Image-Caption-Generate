@@ -28,13 +28,11 @@ with st.sidebar:
     This project is an AI-powered multilingual visual assistant designed to generate image captions, translate them into Bengali, and provide speech output for accessibility support.
 
     ### Dataset Used
-    **COCO 2017 Dataset (Subset)**
+    **COCO 2017 (Subset)**
 
-    - Original Dataset: 118,287 images and 591,753 captions  
-    - Validation Set: 5,000 images and 25,014 captions  
-    - Fine-tuned on a subset of **50,000 training samples**  
-    - Evaluated on **2,000 validation samples**  
-    - Used for image caption generation with Florence-2 + LoRA  
+    - 50,000 training image-caption pairs  
+    - 2,000 validation samples  
+    - Fine-tuned using **Florence-2 + LoRA** 
 
     ### Features
     ✅ Image Caption Generation  
